@@ -7,8 +7,8 @@
   outline: none;
 
   &.matched .front {
-    background-image: linear-gradient(
-      to right,
+    background-image: radial-gradient(
+      circle at 300%,
       #0ba360,
       #3cba92,
       #30dd8a,
