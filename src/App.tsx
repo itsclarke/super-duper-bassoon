@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
-import Card from "./components/card";
-import Winner from "./components/winner";
+import { CardComponent } from "./components/card";
+import { WinnerComponent } from "./components/winner";
 import { shuffle, allCards } from "./utils/cards";
 import "./app.scss";
 
-const App = () => {
-  const [cards, setCards] = useState([]);
-  const [flipped, setFlipped] = useState([]);
-  const [selected, setSelected] = useState([]);
-  const [matches, setMatches] = useState([]);
+type Card = {
+  id: number;
+  type: number;
+};
+
+export const App: React.FC = () => {
+  const [cards, setCards] = useState<Array<Card> | []>([]);
+  const [flipped, setFlipped] = useState<Array<number> | []>([]);
+  const [selected, setSelected] = useState<Array<Card> | []>([]);
+  const [matches, setMatches] = useState<Array<number> | []>([]);
 
   useEffect(() => {
     const shuffled = shuffle(allCards);
@@ -23,10 +28,10 @@ const App = () => {
     setCards(shuffled);
   };
 
-  const sameCardClicked = (card) => selected[0].type === card.type;
+  const sameCardClicked = (card: Card) => selected[0].type === card.type;
 
-  const unFlip = (...unflip) => {
-    const stayFlipped = [];
+  const unFlip = (...unflip: Array<number>) => {
+    const stayFlipped: Array<number> = [];
     flipped.forEach((id) => {
       if (!unflip.includes(id)) {
         stayFlipped.push(id);
@@ -36,7 +41,7 @@ const App = () => {
     setSelected([]);
   };
 
-  const handleClick = (card) => {
+  const handleClick = (card: Card) => {
     if (selected.length === 0) {
       setSelected([card]);
       setFlipped([...flipped, card.id]);
@@ -57,18 +62,18 @@ const App = () => {
     }
   };
 
-  const renderGrid = (cards) => {
-    return cards.map((card) => {
+  const renderGrid = (cards: Card[]) => {
+    return cards.map((card: Card) => {
       return (
-        <Card
+        <CardComponent
           key={card.id}
           card={card}
-          isFlipped={flipped.includes(card.id)}
-          matched={matches.includes(card.id)}
+          isFlipped={flipped.includes(card.id as never)}
+          matched={matches.includes(card.id as never)}
           handleClick={handleClick}
         >
           {card}
-        </Card>
+        </CardComponent>
       );
     });
   };
@@ -77,7 +82,7 @@ const App = () => {
     <main>
       <h1>Test Your Memory 🧠</h1>
       <div className='grid'>{renderGrid(cards)}</div>
-      <Winner cards={cards} matches={matches} reset={resetGame} />
+      <WinnerComponent cards={cards} matches={matches} reset={resetGame} />
     </main>
   );
 };

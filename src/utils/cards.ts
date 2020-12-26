@@ -1,4 +1,9 @@
-export const shuffle = (array) => {
+type Card = {
+  type: number;
+  id: number;
+};
+
+export const shuffle = (array: Card[]) => {
   let copy = [...array];
   for (let i = 0; i < array.length; i++) {
     let random = Math.floor(Math.random() * (i + 1));

@@ -1,7 +1,19 @@
-import PropTypes from "prop-types";
 import "./card.scss";
 
-const Card = ({ card, isFlipped, handleClick, matched }) => {
+type Card = {
+  id: number;
+  type: number;
+};
+
+type Props = {
+  card: Card;
+  isFlipped: boolean;
+  handleClick: (card: Card) => void;
+  matched: boolean;
+};
+
+export const CardComponent: React.FC<Props> = (props) => {
+  const { card, isFlipped, handleClick, matched } = props;
   const preventClick = isFlipped || matched;
   return (
     <div
@@ -9,7 +21,6 @@ const Card = ({ card, isFlipped, handleClick, matched }) => {
         matched ? "matched" : ""
       }`}
       onClick={() => (preventClick ? null : handleClick(card))}
-      id={card.id}
     >
       <div className='inner'>
         <div className='front'>{card.type}</div>
@@ -18,12 +29,3 @@ const Card = ({ card, isFlipped, handleClick, matched }) => {
     </div>
   );
 };
-
-Card.propTypes = {
-  card: PropTypes.object.isRequired,
-  isFlipped: PropTypes.bool.isRequired,
-  handleClick: PropTypes.func.isRequired,
-  matched: PropTypes.bool.isRequired,
-};
-
-export default Card;
